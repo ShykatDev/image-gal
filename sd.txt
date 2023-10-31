@@ -1,0 +1,119 @@
+import { useState, useRef } from "react";
+import {
+  img1,
+  img10,
+  img11,
+  img2,
+  img3,
+  img4,
+  img5,
+  img6,
+  img7,
+  img8,
+  img9,
+  preview,
+} from "./assets";
+
+function App() {
+  const [selection, setSelection] = useState(false);
+  const [items, setItems] = useState([]);
+
+  const container = useRef();
+  const bigbox = useRef();
+
+  const selectItem = (e) => {
+    // container.current.removeChild(e.target);
+
+    if (e.target.className === "selectBox") {
+      if (e.target.checked) {
+        setItems((current) => [...current, bigbox]);
+      } else {
+        items.filter((i) => i !== bigbox);
+      }
+    }
+  };
+
+  console.log(items);
+  return (
+    <div className="p-4 bg-blue-50 h-screen w-screen">
+      <div className=" bg-white border rounded-lg">
+        <header className="py-8 px-16 mb-5 border-b-2">
+          {!selection && items.length === 0 ? (
+            <h2 className="font-medium">Gallery</h2>
+          ) : (
+            <div className="flex justify-between item-center">
+              <h2 className="font-medium">
+                {" "}
+                <input type="checkbox" checked /> {items.length}{" "}
+                {items.length === 1 ? "File Selected" : "Files Selected"}
+              </h2>
+              <p className="text-red-600 font-regular">
+                {items.length === 1 ? "Delete File" : "Delete Files"}
+              </p>
+            </div>
+          )}
+        </header>
+
+        <div
+          ref={container}
+          className="w-screen h-full grid grid-cols-5 grid-rows-3 gap-5 px-16 pb-5"
+        >
+          <div
+            className="item col-span-2 row-span-2 bg-slate-100 rounded-md border w-full h-full"
+            onClick={(e) => selectItem(e)}
+            ref={bigbox}
+          >
+            <input type="checkbox" className="selectBox" />
+            <img src={img11} alt="" className="w-full object-cover" />
+          </div>
+          <div className="item w-full h-full bg-slate-100 rounded-md border">
+            <input type="checkbox" className="selectBox" name="" id="" />
+            <img src={img1} alt="" className="w-full h-full object-cover" />
+          </div>
+          <div className="item w-full h-full bg-slate-100 rounded-md border">
+            <input type="checkbox" className="selectBox" name="" id="" />
+            <img src={img2} alt="" className="w-full h-full object-cover" />
+          </div>
+          <div className="item w-full h-full bg-slate-100 rounded-md border">
+            <input type="checkbox" className="selectBox" name="" id="" />
+            <img src={img3} alt="" className="w-full h-full object-cover" />
+          </div>
+          <div className="item w-full h-full bg-slate-100 rounded-md border">
+            <input type="checkbox" className="selectBox" name="" id="" />
+            <img src={img4} alt="" className="w-full h-full object-cover" />
+          </div>
+          <div className="item w-full h-full bg-slate-100 rounded-md border">
+            <input type="checkbox" className="selectBox" name="" id="" />
+            <img src={img5} alt="" className="w-full h-full object-cover" />
+          </div>
+          <div className="item w-full h-full bg-slate-100 rounded-md border">
+            <input type="checkbox" className="selectBox" name="" id="" />
+            <img src={img6} alt="" className="w-full h-full object-cover" />
+          </div>
+          <div className="item w-full h-full bg-slate-100 rounded-md border">
+            <input type="checkbox" className="selectBox" name="" id="" />
+            <img src={img7} alt="" className="w-full h-full object-cover" />
+          </div>
+          <div className="item w-full h-full bg-slate-100 rounded-md border">
+            <input type="checkbox" className="selectBox" name="" id="" />
+            <img src={img8} alt="" className="w-full h-full object-cover" />
+          </div>
+          <div className="item w-full h-full bg-slate-100 rounded-md border">
+            <input type="checkbox" className="selectBox" name="" id="" />
+            <img src={img9} alt="" className="w-full h-full object-cover" />
+          </div>
+          <div className="item w-full h-full bg-slate-100 rounded-md border">
+            <input type="checkbox" className="selectBox" name="" id="" />
+            <img src={img10} alt="" className="w-full h-full object-cover" />
+          </div>
+          <div className="w-full h-full bg-slate-100 rounded-md border-dashed border-2 flex justify-center items-center flex-col">
+            <img src={preview} alt="preview" className="w-1/6 mb-4" />
+            <h2 className="font-medium text-2xl text-center">Add Images</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
