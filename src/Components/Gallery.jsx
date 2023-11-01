@@ -52,7 +52,7 @@ const Gallery = ({select, setSelect, contentBoxRef}) => {
   };
   return (
     <div
-      className="contentBox w-full h-full grid grid-cols-2 grid-rows-8 gap-5 px-16 pb-5 sm:grid-cols-3 sm:grid-row-5 md:grid-cols-4 md:grid-row-4 lg:grid-cols-5 lg:grid-rows-3"
+      className="contentBox w-full h-full grid grid-cols-2 grid-rows-8 gap-5 px-5 pb-5 sm:grid-cols-3 sm:grid-row-5 md:grid-cols-4 md:grid-row-4 lg:grid-cols-5 lg:grid-rows-3 sm:px-10"
       ref={contentBoxRef}
     >
       <DndContext collisionDetection={closestCenter} onDragEnd={dragFun}>
