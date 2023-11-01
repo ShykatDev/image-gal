@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { motion } from "framer-motion";
 
 const Item = ({ imgItem, setSelect }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -28,7 +29,12 @@ const Item = ({ imgItem, setSelect }) => {
   };
 
   return (
-    <div className={selectItem ? "itemBox selectedBox" : "itemBox"}>
+    <motion.div
+      initial={{ x: 300, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.7, delay: 0.5 }}
+      className={selectItem ? "itemBox selectedBox" : "itemBox"}
+    >
       <input type="checkbox" className="checkBox" onClick={itemSelection} />
 
       <button
@@ -40,7 +46,7 @@ const Item = ({ imgItem, setSelect }) => {
       >
         <img src={imgItem.imgSrc} alt="imgItem" className="imageItem" />
       </button>
-    </div>
+    </motion.div>
   );
 };
 

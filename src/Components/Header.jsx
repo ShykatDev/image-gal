@@ -1,8 +1,14 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const Header = ({ items, deleteItemsFun }) => {
   return (
-    <header className="py-8 px-16 mb-5 border-b-2">
+    <motion.header
+      initial={{ x: -300, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.7 }}
+      className="py-8 px-16 mb-5 border-b-2"
+    >
       {items.length === 0 ? (
         <h1 className="font-bold text-xl">Gallery</h1>
       ) : (
@@ -21,7 +27,7 @@ const Header = ({ items, deleteItemsFun }) => {
           </p>
         </div>
       )}
-    </header>
+    </motion.header>
   );
 };
 
