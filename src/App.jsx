@@ -13,117 +13,89 @@ import {
   img9,
   preview,
 } from "./assets";
+import Item from "./Components/Item";
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import {
+  SortableContext,
+  arraySwap,
+  rectSwappingStrategy,
+} from "@dnd-kit/sortable";
+import Header from "./Components/Header";
 
 function App() {
-  // const [selection, setSelection] = useState(false);
-  const [items, setItems] = useState([]);
+  const images = [
+    { id: 1, imgSrc: img11 },
+    { id: 2, imgSrc: img1 },
+    { id: 3, imgSrc: img2 },
+    { id: 4, imgSrc: img3 },
+    { id: 5, imgSrc: img4 },
+    { id: 6, imgSrc: img5 },
+    { id: 7, imgSrc: img6 },
+    { id: 8, imgSrc: img7 },
+    { id: 9, imgSrc: img8 },
+    { id: 10, imgSrc: img9 },
+    { id: 11, imgSrc: img10 },
+  ];
 
-  const container = useRef();
+  const [imgLists, setImgLists] = useState(images);
+  const [select, setSelect] = useState([]);
+  const contentBoxRef = useRef();
 
-  const deleteByValue = (value) => {
-    setItems((oldValues) => {
-      return oldValues.filter((fruit) => fruit !== value);
-    });
-  };
-
-  const selectItem = (e) => {
-    if (e.target.className === "selectBox") {
-      if (e.target.checked == true) {
-        setItems((current) => [...current, e.target.parentNode]);
-
-        e.target.parentNode.classList.add("selected");
-      } else {
-        deleteByValue(e.target.parentNode);
-        e.target.parentNode.classList.remove("selected");
-      }
+  //Drag and Drop Function------------------------✅👇
+  const dragFun = (e) => {
+    const { active, over } = e;
+    if (active.id === over.id) {
+      return;
     }
-  };
-
-  const deleteItems = () => {
-    items.map((item) => {
-      container.current.removeChild(item);
+    setImgLists((imgs) => {
+      const oldInd = imgs.findIndex((i) => i.id === active.id);
+      const newInd = imgs.findIndex((i) => i.id === over.id);
+      return arraySwap(imgs, oldInd, newInd);
     });
-
-    setItems([]);
   };
-  console.log(items);
+
+  //Delete item/items--------------------------✅👇
+  const deleteItems = () => {
+    select.map((item) => {
+      contentBoxRef.current.removeChild(item);
+    });
+    setSelect([]);
+  };
+
   return (
-    <div className="p-4 bg-blue-50 h-screen w-screen">
-      <div className=" bg-white border rounded-lg">
-        <header className="py-8 px-16 mb-5 border-b-2">
-          {items.length === 0 ? (
-            <h1 className="font-medium text-xl">Gallery</h1>
-          ) : (
-            <div className="flex justify-between item-center">
-              <h2 className="font-medium">
-                {" "}
-                <input type="checkbox" checked /> {items.length}{" "}
-                {items.length === 1 ? "File Selected" : "Files Selected"}
-              </h2>
-              <p
-                className="text-red-600 font-regular cursor-pointer"
-                onClick={deleteItems}
-              >
-                {items.length === 1 ? "Delete File" : "Delete Files"}
-              </p>
-            </div>
-          )}
-        </header>
+    <div className="p-10 bg-blue-50">
+      <div className="bg-white rounded-lg mb-5">
+        <Header items={select} deleteItemsFun={deleteItems} />
 
         <div
-          ref={container}
-          className="w-screen h-full grid grid-cols-5 grid-rows-3 gap-5 px-16 pb-5"
+          className="contentBox w-full h-full grid grid-cols-2 grid-rows-8 gap-5 px-16 pb-5 sm:grid-cols-3 sm:grid-row-5 md:grid-cols-4 md:grid-row-4 lg:grid-cols-5 lg:grid-rows-3"
+          ref={contentBoxRef}
         >
-          <div className="item col-span-2 row-span-2" onClick={selectItem}>
-            <input type="checkbox" className="selectBox" />
-            <img src={img11} />
-          </div>
-          <div className="item " onClick={selectItem}>
-            <input type="checkbox" className="selectBox" />
-            <img src={img1} />
-          </div>
-          <div className="item " onClick={selectItem}>
-            <input type="checkbox" className="selectBox" />
-            <img src={img2} />
-          </div>
-          <div className="item " onClick={selectItem}>
-            <input type="checkbox" className="selectBox" />
-            <img src={img3} />
-          </div>
-          <div className="item " onClick={selectItem}>
-            <input type="checkbox" className="selectBox" />
-            <img src={img4} />
-          </div>
-          <div className="item " onClick={selectItem}>
-            <input type="checkbox" className="selectBox" />
-            <img src={img5} />
-          </div>
-          <div className="item " onClick={selectItem}>
-            <input type="checkbox" className="selectBox" />
-            <img src={img6} />
-          </div>
-          <div className="item " onClick={selectItem}>
-            <input type="checkbox" className="selectBox" />
-            <img src={img7} />
-          </div>
-          <div className="item " onClick={selectItem}>
-            <input type="checkbox" className="selectBox" />
-            <img src={img8} />
-          </div>
-          <div className="item " onClick={selectItem}>
-            <input type="checkbox" className="selectBox" />
-            <img src={img9} />
-          </div>
-          <div className="item " onClick={selectItem}>
-            <input type="checkbox" className="selectBox" />
-            <img src={img10} />
-          </div>
-          <div className="border-dashed rounded-md border-2 flex justify-center items-center flex-col">
+          <DndContext collisionDetection={closestCenter} onDragEnd={dragFun}>
+            <SortableContext items={images} strategy={rectSwappingStrategy}>
+              {imgLists.map((imgItem, ind) => {
+                return (
+                  <Item
+                    imgItem={imgItem}
+                    key={ind}
+                    setSelect={setSelect}
+                    select={select}
+                  />
+                );
+              })}
+            </SortableContext>
+          </DndContext>
+
+          <div className="border-dashed rounded-md border-2 flex justify-center items-center flex-col w-full h-40 md:h-full sm:h-full">
             <img src={preview} alt="preview" className="w-1/6 mb-4" />
-            <h2 className="font-medium text-2xl text-center">Add Images</h2>
+            <h2 className="font-medium text-xl text-center md:text-xl">
+              Add Images
+            </h2>
           </div>
         </div>
       </div>
+
+      <small className="text-xs">Submitted by Shykat Raha</small>
     </div>
   );
 }
